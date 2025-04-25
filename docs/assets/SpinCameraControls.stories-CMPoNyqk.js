@@ -3840,7 +3840,7 @@ void main() {
   -0.8700678484298644,\r
   -0.010699096699409466,\r
   -0.012682729228320708,\r
-)`,computed:!1}},children:{required:!1,tsType:{name:"ReactNode"},description:""}}};const Dp=()=>{const{scene:i}=Pp();return gt.useEffect(()=>{const e=new si(2,2,2),t=new Vs({color:16711680}),n=new Gt(e,t);i.add(n)},[i]),null},Np={title:"Camera360Controls",component:Ws},ji={render:()=>wn.jsx("div",{style:{width:"100%",height:"100%"},children:wn.jsx(Ws,{children:wn.jsx(Dp,{})})})};ji.parameters={...ji.parameters,docs:{...ji.parameters?.docs,source:{originalSource:`{
+)`,computed:!1}},children:{required:!1,tsType:{name:"ReactNode"},description:""}}};const Dp=()=>{const{scene:i}=Pp();return gt.useEffect(()=>{const e=new si(2,2,2),t=new Vs({color:16711680}),n=new Gt(e,t);i.add(n)},[i]),null},Np={title:"SpinCameraControls",component:Ws},ji={render:()=>wn.jsx("div",{style:{width:"100%",height:"100%"},children:wn.jsx(Ws,{children:wn.jsx(Dp,{})})})};ji.parameters={...ji.parameters,docs:{...ji.parameters?.docs,source:{originalSource:`{
   render: () => {
     return <div style={{
       width: '100%',

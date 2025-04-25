@@ -6,7 +6,7 @@
 
 import * as THREE from 'three';
 
-interface Camera360ControlsEventMap {
+interface SpinCameraControlsEventMap {
   change: { type: 'change' };
   start: { type: 'start' };
   end: { type: 'end' };
@@ -18,7 +18,7 @@ interface Camera360ControlsEventMap {
  * @event OrbitControls#change
  * @type {Object}
  */
-const changeEvent: Camera360ControlsEventMap['change'] = { type: 'change' } as const;
+const changeEvent: SpinCameraControlsEventMap['change'] = { type: 'change' } as const;
 
 /**
  * Fires when an interaction was initiated.
@@ -26,7 +26,7 @@ const changeEvent: Camera360ControlsEventMap['change'] = { type: 'change' } as c
  * @event OrbitControls#start
  * @type {Object}
  */
-const startEvent: Camera360ControlsEventMap['start'] = { type: 'start' };
+const startEvent: SpinCameraControlsEventMap['start'] = { type: 'start' };
 
 /**
  * Fires when an interaction has finished.
@@ -34,7 +34,7 @@ const startEvent: Camera360ControlsEventMap['start'] = { type: 'start' };
  * @event OrbitControls#end
  * @type {Object}
  */
-const endEvent: Camera360ControlsEventMap['end'] = { type: 'end' };
+const endEvent: SpinCameraControlsEventMap['end'] = { type: 'end' };
 
 /** 有効なマウスアクション */
 type EnabledMouseActions = THREE.MOUSE.ROTATE;
@@ -43,10 +43,10 @@ type EnabledTouchActions = THREE.TOUCH.ROTATE;
 
 /**
  * 360度自転操作を行うクラス
- * @class Camera360Controls
+ * @class SpinCameraControls
  * @extends THREE.Controls
  */
-export class Camera360Controls extends THREE.Controls<Camera360ControlsEventMap> {
+export class SpinCameraControls extends THREE.Controls<SpinCameraControlsEventMap> {
   /** 操作対象のカメラ */
   public camera: THREE.PerspectiveCamera;
   /** 回転感度 */

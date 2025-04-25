@@ -1,8 +1,8 @@
 {
-  "name": "three-camera360controls",
+  "name": "three-spin-camera-controls",
   "private": true,
   "version": "0.1.0",
-  "description": "360-degree camera controls in Three.js",
+  "description": "Controls for rotating Three.js camera around its own axis.",
   "type": "module",
   "scripts": {
     "dev": "vite",

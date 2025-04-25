@@ -8,7 +8,7 @@ import {
   useMemo,
 } from "react";
 import * as THREE from "three";
-import { Camera360Controls } from "../../Camera360Controls";
+import { SpinCameraControls } from "../../SpinCameraControls";
 
 const DEFAULT_CAMERA_POSITION: THREE.Vector3 = new THREE.Vector3(0, 10, 10);
 const DEFAULT_CAMERA_ROTATION: THREE.Euler = new THREE.Euler(
@@ -21,7 +21,7 @@ export type SceneContextValue = {
   scene: THREE.Scene;
   camera: THREE.PerspectiveCamera;
   renderer: THREE.WebGLRenderer | null;
-  controls: Camera360Controls;
+  controls: SpinCameraControls;
 };
 
 const SceneContext = createContext<SceneContextValue | null>(null);
@@ -51,8 +51,8 @@ export const Scene = ({
   const { current: camera } = useRef<THREE.PerspectiveCamera>(
     new THREE.PerspectiveCamera()
   );
-  // Camera360Controls
-  const { current: controls } = useRef<Camera360Controls>(new Camera360Controls(camera));
+  // SpinCameraControls
+  const { current: controls } = useRef<SpinCameraControls>(new SpinCameraControls(camera));
 
   // ライト
   const [light] = useState(() => {

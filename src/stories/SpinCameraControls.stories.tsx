@@ -3,7 +3,7 @@ import { Scene } from "./context/Scene";
 import { Mesh } from "./components/Mesh";
 
 const meta = {
-  title: "Camera360Controls",
+  title: "SpinCameraControls",
   component: Scene,
 } satisfies Meta<typeof Scene>;
 export default meta;
