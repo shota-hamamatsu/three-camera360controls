@@ -217,8 +217,6 @@ export class SpinCameraControls extends THREE.Controls<SpinCameraControlsEventMa
     target.y = Math.sin(this._pitch);
     target.z = Math.cos(this._pitch) * Math.cos(this._yaw);
 
-    console.log(this._yaw, this._pitch, target);
-
     // カメラの位置を加算して、カメラの向いている座標を計算
     target.add(this.camera.position);
     this.camera.lookAt(target);
