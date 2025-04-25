@@ -5,19 +5,24 @@ import {
   useEffect,
   useRef,
   useState,
-  useCallback,
   useMemo,
 } from "react";
 import * as THREE from "three";
-import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
+import { Camera360Controls } from "../Camera360Controls";
+
 
 const DEFAULT_CAMERA_POSITION: THREE.Vector3 = new THREE.Vector3(0, 10, 10);
+const DEFAULT_CAMERA_ROTATION: THREE.Euler = new THREE.Euler(
+  -0.8700678484298644,
+  -0.010699096699409466,
+  -0.012682729228320708,
+);
 
 export type SceneContextValue = {
   scene: THREE.Scene;
   camera: THREE.PerspectiveCamera;
-  renderer: THREE.Renderer;
-  control: OrbitControls;
+  renderer: THREE.WebGLRenderer | null;
+  controls: Camera360Controls;
 };
 
 const SceneContext = createContext<SceneContextValue | null>(null);
@@ -29,91 +34,110 @@ export const useSceneContext = () => {
 };
 
 export const Scene = ({
+  initialCameraPosition = DEFAULT_CAMERA_POSITION,
+  initialCameraRotation = DEFAULT_CAMERA_ROTATION,
   children,
 }: {
+  initialCameraPosition?: THREE.Vector3Like;
+  initialCameraRotation?: THREE.Euler;
   children?: ReactNode;
 }): JSX.Element | null => {
   // canvasのRef
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  // renderer
+  const rendererRef = useRef<THREE.WebGLRenderer | null>(null);
   // scene
   const { current: scene } = useRef<THREE.Scene>(new THREE.Scene());
   // camera
   const { current: camera } = useRef<THREE.PerspectiveCamera>(
-    new THREE.PerspectiveCamera(
-      75,
-      window.innerWidth / window.innerHeight,
-      0.1,
-      1000
-    )
+    new THREE.PerspectiveCamera()
   );
-  // renderer
-  const [renderer, setRenderer] = useState<THREE.Renderer>();
-  // OrbitControls
-  const [control, setControl] = useState<OrbitControls>();
+  // Camera360Controls
+  const { current: controls } = useRef<Camera360Controls>(new Camera360Controls(camera));
+
   // ライト
   const [light] = useState(() => {
     const light = new THREE.AmbientLight(0xffaaff);
     light.position.set(10, 10, 10);
     return light;
   });
-
-  /** リサイズハンドラ */
-  const handleResize = useCallback(() => {
-    if (!renderer || !camera) {
-      return;
-    }
-    renderer.setSize(window.innerWidth, window.innerHeight);
-    camera.aspect = window.innerWidth / window.innerHeight;
-    camera.updateProjectionMatrix();
-  }, [camera, renderer]);
+  const [axisHelper] = useState(() => {
+    const axisHelper = new THREE.AxesHelper(5);
+    axisHelper.position.set(0, 0, 0);
+    return axisHelper;
+  });
+  const [gridHelper] = useState(() => {
+    const gridHelper = new THREE.GridHelper(100, 100);
+    gridHelper.position.set(0, 0, 0);
+    return gridHelper;
+  });
 
   // 初期化
   useEffect(() => {
     if (!canvasRef.current) return;
     // レンダラー作成
-    const renderer = new THREE.WebGLRenderer({
+    rendererRef.current = new THREE.WebGLRenderer({
       canvas: canvasRef.current,
       antialias: true,
       alpha: true,
       depth: true,
     });
+    rendererRef.current.setSize(window.innerWidth, window.innerHeight);
     // 背景色
-    renderer.setClearColor(0xeeeeee);
+    rendererRef.current.setClearColor(0xeeeeee);
     // レンダラーのアニメーション(FPSは環境依存)
-    renderer.setAnimationLoop(() => {
-      renderer.render(scene, camera);
+    rendererRef.current.setAnimationLoop(() => {
+      rendererRef.current?.render(scene, camera);
     });
     // cameraのpositionセット
-    camera.position.set(
-      DEFAULT_CAMERA_POSITION.x,
-      DEFAULT_CAMERA_POSITION.y,
-      DEFAULT_CAMERA_POSITION.z
-    );
-    // 画面のコントロール作成
-    const control = new OrbitControls(camera, renderer.domElement);
+    camera.position.copy(initialCameraPosition);
+    camera.rotation.copy(initialCameraRotation);
+    controls.connect(canvasRef.current);
     // ライト追加
     scene.add(light);
-    setRenderer(renderer);
-    setControl(control);
+    scene.add(axisHelper);
+    scene.add(gridHelper);
+    return () => {
+      // レンダラーのアニメーション停止
+      rendererRef.current?.setAnimationLoop(null);
+      // canvasのクリーンアップ
+      rendererRef.current?.dispose();
+      // sceneのクリーンアップ
+      scene.clear();
+      // cameraのクリーンアップ
+      controls.disconnect();
+    }
   }, [camera, canvasRef, light, scene]);
 
-  // リサイズイベント
-  useEffect(handleResize, [handleResize]);
+  useEffect(() => {
+    const handleChange = () => {
+      console.log("camera position/rotation", camera.position.clone(), camera.rotation.clone());
+    }
+    controls.addEventListener("change", handleChange);
+    return () => {
+      controls.removeEventListener("change", handleChange);
+    };
+  }, [controls, camera]);
 
   /** コンテキスト */
-  const sceneContext = useMemo<SceneContextValue | null>(() => {
-    if (!renderer || !control) return null;
+  const sceneContext = useMemo<SceneContextValue>(() => {
     return {
       scene,
-      renderer,
-      control,
+      renderer: rendererRef.current,
+      controls,
       camera,
     };
-  }, [camera, control, renderer, scene]);
+  }, [camera, controls, scene]);
 
   return (
     <>
-      <canvas ref={canvasRef} />
+      <canvas
+        ref={canvasRef}
+        style={{
+          width: "100%",
+          height: "100%",
+        }}
+      />
       {sceneContext ? (
         <SceneContext.Provider value={sceneContext}>
           {children}
