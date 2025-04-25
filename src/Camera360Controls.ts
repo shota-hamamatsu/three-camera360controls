@@ -6,7 +6,7 @@
 
 import * as THREE from 'three';
 
-interface PanoramaControlsEventMap {
+interface Camera360ControlsEventMap {
   change: { type: 'change' };
   start: { type: 'start' };
   end: { type: 'end' };
@@ -18,7 +18,7 @@ interface PanoramaControlsEventMap {
  * @event OrbitControls#change
  * @type {Object}
  */
-const changeEvent: PanoramaControlsEventMap['change'] = { type: 'change' } as const;
+const changeEvent: Camera360ControlsEventMap['change'] = { type: 'change' } as const;
 
 /**
  * Fires when an interaction was initiated.
@@ -26,7 +26,7 @@ const changeEvent: PanoramaControlsEventMap['change'] = { type: 'change' } as co
  * @event OrbitControls#start
  * @type {Object}
  */
-const startEvent: PanoramaControlsEventMap['start'] = { type: 'start' };
+const startEvent: Camera360ControlsEventMap['start'] = { type: 'start' };
 
 /**
  * Fires when an interaction has finished.
@@ -34,7 +34,7 @@ const startEvent: PanoramaControlsEventMap['start'] = { type: 'start' };
  * @event OrbitControls#end
  * @type {Object}
  */
-const endEvent: PanoramaControlsEventMap['end'] = { type: 'end' };
+const endEvent: Camera360ControlsEventMap['end'] = { type: 'end' };
 
 /** 有効なマウスアクション */
 type EnabledMouseActions = THREE.MOUSE.ROTATE;
@@ -42,11 +42,11 @@ type EnabledMouseActions = THREE.MOUSE.ROTATE;
 type EnabledTouchActions = THREE.TOUCH.ROTATE;
 
 /**
- * 360度カメラ操作を行うクラス
- * @class PanoramaControls
+ * 360度自転操作を行うクラス
+ * @class Camera360Controls
  * @extends THREE.Controls
  */
-export class Camera360Controls extends THREE.Controls<PanoramaControlsEventMap> {
+export class Camera360Controls extends THREE.Controls<Camera360ControlsEventMap> {
   /** 操作対象のカメラ */
   public camera: THREE.PerspectiveCamera;
   /** 回転感度 */
