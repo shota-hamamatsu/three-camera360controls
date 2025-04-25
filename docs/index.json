@@ -1,1 +1,1 @@
-{"v":5,"entries":{"camera360controls--test":{"type":"story","id":"camera360controls--test","name":"Test","title":"Camera360Controls","importPath":"./src/stories/Camera360Controls.stories.tsx","componentPath":"./src/context/Scene.tsx","tags":["dev","test"]}}}
+{"v":5,"entries":{"camera360controls--test":{"type":"story","id":"camera360controls--test","name":"Test","title":"Camera360Controls","importPath":"./src/stories/Camera360Controls.stories.tsx","componentPath":"./src/stories/context/Scene.tsx","tags":["dev","test"]}}}

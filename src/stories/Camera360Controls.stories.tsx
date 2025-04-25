@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { Scene } from "../context/Scene";
-import { Mesh } from "../Mesh";
+import { Scene } from "./context/Scene";
+import { Mesh } from "./components/Mesh";
 
 const meta = {
   title: "Camera360Controls",
