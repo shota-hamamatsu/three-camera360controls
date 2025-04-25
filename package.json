@@ -1,8 +1,8 @@
 {
-  "name": "react-app-template",
+  "name": "three-camera360controls",
   "private": true,
-  "version": "0.0.0",
-  "description": "Template for developing with React and TypeScript",
+  "version": "0.1.0",
+  "description": "360-degree camera controls in Three.js",
   "type": "module",
   "scripts": {
     "dev": "vite",
