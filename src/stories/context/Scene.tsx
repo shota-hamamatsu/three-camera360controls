@@ -91,6 +91,8 @@ export const Scene = ({
     // cameraのpositionセット
     camera.position.copy(initialCameraPosition);
     camera.rotation.copy(initialCameraRotation);
+    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.updateProjectionMatrix();
     controls.connect(canvasRef.current);
     // ライト追加
     scene.add(light);
